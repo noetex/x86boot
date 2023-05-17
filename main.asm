@@ -21,7 +21,7 @@ print_string:
 		ret
 
 MESSAGE:
-	dw "Currently operating in 16-bit real mode"
+	dw "Currently operating in 16-bit real mode", 0
 
 ; MBR signature
 times (510 - ($ - $$)) db 0
