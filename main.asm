@@ -2,7 +2,7 @@
 [org 0x7c00]
 
 main:
-		mov bx, Message
+		mov bx, MESSAGE
 		call print_string
 		jmp $
 
@@ -20,7 +20,8 @@ print_string:
 		popa
 		ret
 
-Message db "Hello World", 0
+MESSAGE:
+	dw "Currently operating in 16-bit real mode"
 
 ; MBR signature
 times (510 - ($ - $$)) db 0
