@@ -1,27 +1,61 @@
-[bits 16]
 [org 0x7c00]
 
+[bits 16]
+enable_protected_mode:
+		cli
+		xor ax, ax
+		mov ds, ax
+		lgdt [GDT_DESC]
+		mov eax, cr0
+		or eax, 1
+		mov cr0, eax
+		jmp CODE_SEG_OFFSET: main	; clear i-cache
+
+[bits 32]
 main:
-		mov bx, MESSAGE
+		mov ax, DATA_SEG_OFFSET
+		mov ds, ax
+		mov ss, ax
+		mov ebx, MESSAGE
 		call print_string
 		jmp $
 
 print_string:
 		pusha
-		mov ah, 0x0e	;bios teletype output routine
+		mov edx, VIDEO_MEMORY
+		mov ah, WHITE_ON_BLACK
 	print_string_loop:
-		mov al, [bx]	;bx: pointer to char string
+		mov al, byte [ebx]
 		cmp al, 0
 		je print_string_end
-		int 0x10
-		inc bx
+		mov word [edx], ax
+		add edx, 2
+		inc ebx
 		jmp print_string_loop
 	print_string_end:
 		popa
 		ret
 
 MESSAGE:
-	dw "Currently operating in 16-bit real mode", 0
+	dd "Now operating in 32-bit protected mode", 0
+
+GDT_BEGIN:
+	dq 0x0
+GDT_CODE:
+	dq 0x00cf9a000000ffff
+GDT_DATA:
+	dq 0x00cf92000000ffff
+GDT_END:
+
+GDT_DESC:
+	dw ((GDT_END - GDT_BEGIN) - 1)	; sizeof GDT
+	dd GDT_BEGIN	; GDT base address
+
+; macros
+VIDEO_MEMORY equ 0xb8000
+WHITE_ON_BLACK equ 0xf
+CODE_SEG_OFFSET equ (GDT_CODE - GDT_BEGIN)
+DATA_SEG_OFFSET equ (GDT_DATA - GDT_BEGIN)
 
 ; MBR signature
 times (510 - ($ - $$)) db 0
