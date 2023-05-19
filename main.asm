@@ -9,13 +9,18 @@ enable_protected_mode:
 		mov eax, cr0
 		or eax, 1
 		mov cr0, eax
-		jmp CODE_SEG_OFFSET: main	; clear i-cache
+		jmp CODE_SEG_OFFSET: reload_segments	; clear i-cache
 
 [bits 32]
-main:
+reload_segments:
 		mov ax, DATA_SEG_OFFSET
 		mov ds, ax
+		mov es, ax
+		mov fs, ax
+		mov gs, ax
 		mov ss, ax
+
+main:
 		mov ebx, MESSAGE
 		call print_string
 		jmp $
