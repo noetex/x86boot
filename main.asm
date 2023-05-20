@@ -9,18 +9,16 @@ start16:
 		mov es, ax
 
 disk_read:
-		mov ah, 0x2
-		mov al, 1
-		mov ch, 0
-		mov dh, 0
-		mov cl, 2
-		mov bx, 0x7e00
+		mov ah, 0x2	; read sector routine
+		mov al, 0x1	; num sectors to read
+		mov ch, 0x0	; select track 0
+		mov dh, 0x0	; select head 0
+		mov cl, 0x2	; start from sector 2 (1 is us)
+		mov bx, 0x7e00	; read destination
 		int 0x13
 
 enable_protected_mode:
 		cli
-		xor ax, ax
-		mov ds, ax
 		lgdt [GDT_DESC]
 		mov eax, cr0
 		or eax, 1
@@ -33,9 +31,7 @@ start32:
 		mov ds, ax
 		mov es, ax
 		mov ss, ax
-
-main:
-		jmp $
+		jmp main
 
 GDT_BEGIN:
 	dq 0x0
@@ -56,3 +52,6 @@ DATA_SEG_OFFSET equ (GDT_DATA - GDT_BEGIN)
 ; MBR signature
 times (510 - ($ - $$)) db 0
 dw 0xaa55
+
+main:
+		jmp $
