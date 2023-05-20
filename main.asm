@@ -35,28 +35,7 @@ start32:
 		mov ss, ax
 
 main:
-		mov ebx, 0x7e00
-		call print_string
 		jmp $
-
-print_string:
-		pusha
-		mov edx, VIDEO_MEMORY
-		mov ah, WHITE_ON_BLACK
-	print_string_loop:
-		mov al, byte [ebx]
-		cmp al, 0
-		je print_string_end
-		mov word [edx], ax
-		add edx, 2
-		inc ebx
-		jmp print_string_loop
-	print_string_end:
-		popa
-		ret
-
-MESSAGE:
-	dd "Now operating in 32-bit protected mode", 0
 
 GDT_BEGIN:
 	dq 0x0
@@ -71,15 +50,9 @@ GDT_DESC:
 	dd GDT_BEGIN	; GDT base address
 
 ; macros
-VIDEO_MEMORY equ 0xb8000
-WHITE_ON_BLACK equ 0xf
 CODE_SEG_OFFSET equ (GDT_CODE - GDT_BEGIN)
 DATA_SEG_OFFSET equ (GDT_DATA - GDT_BEGIN)
 
 ; MBR signature
 times (510 - ($ - $$)) db 0
 dw 0xaa55
-
-; test disk reading
-times 15 db 'X'
-db 0
