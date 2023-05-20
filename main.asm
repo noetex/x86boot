@@ -1,6 +1,22 @@
 [org 0x7c00]
 
 [bits 16]
+		jmp 0x0: start16
+
+start16:
+		xor ax, ax
+		mov ds, ax
+		mov es, ax
+
+disk_read:
+		mov ah, 0x2
+		mov al, 1
+		mov ch, 0
+		mov dh, 0
+		mov cl, 2
+		mov bx, 0x7e00
+		int 0x13
+
 enable_protected_mode:
 		cli
 		xor ax, ax
@@ -21,7 +37,7 @@ reload_segments:
 		mov ss, ax
 
 main:
-		mov ebx, MESSAGE
+		mov ebx, 0x7e00
 		call print_string
 		jmp $
 
@@ -65,3 +81,7 @@ DATA_SEG_OFFSET equ (GDT_DATA - GDT_BEGIN)
 ; MBR signature
 times (510 - ($ - $$)) db 0
 dw 0xaa55
+
+; test disk reading
+times 15 db 'X'
+db 0
