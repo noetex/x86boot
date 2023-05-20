@@ -25,10 +25,10 @@ enable_protected_mode:
 		mov eax, cr0
 		or eax, 1
 		mov cr0, eax
-		jmp CODE_SEG_OFFSET: reload_segments	; clear i-cache
+		jmp CODE_SEG_OFFSET: start32	; clear i-cache
 
 [bits 32]
-reload_segments:
+start32:
 		mov ax, DATA_SEG_OFFSET
 		mov ds, ax
 		mov es, ax
