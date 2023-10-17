@@ -12,5 +12,6 @@ call ld.lld %obj_filename% --oformat=binary --section-start=.text=0x7e00 -o %bin
 type %bin_filename% >> %img_filename%
 
 if "%1" equ "run" (
-	qemu-system-x86_64w %img_filename%
+	rem call qemu-system-x86_64w %img_filename%
+	call qemu-system-i386w %img_filename%
 )
