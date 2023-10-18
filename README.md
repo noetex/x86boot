@@ -1,19 +1,17 @@
 # x86boot
-A first stage MBR bootloader for x86-based processors.
+MBR bootloader for x86-based processors.
 
 ## How to build:
-(note: the instruction below assume a Windows build environment for now)
 ### Prerequisites:
+* Clang
 * NASM
-* QEMU
-```.bat
-git clone https://github.com/ziloet/x86boot
-cd x86boot
-build.bat
-cd build
-call qemu-system-x86_64.exe -drive format=raw,file=build/bootloader.bin
-```
+* QEMU (optional for testing)
+
+### Steps
+* Clone the repository
+* Run the build script (build.bat for Windows, build.sh for Linux)
+* Pass the output image to QEMU
 
 ## About Running
 Although QEMU is used here, but this can be any x86 emulator as well.\
-Or better than an emulator: try it on actual hardware!
+Or better than an emulator: try it on actual hardware! But do it at your own risk.
