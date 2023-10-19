@@ -2,7 +2,11 @@
 #define REG_SCREEN_DATA 0x3d5
 
 #define WHITE_ON_BLACK 0xf
-#define VGA_BUFFER_ADDRESS 0xb8000
+#define VGA_BUFFER_ADDRESS ((void*)0xb8000)
+
+#define VGA_BUFFER_MAX_WIDTH 80
+#define VGA_BUFFER_MAX_HEIGHT 25
+
 
 enum vga_text_color
 {
@@ -24,7 +28,6 @@ enum vga_text_color
 	VGA_TEXT_COLOR_WHITE = 15,
 };
 
-typedef int32_t size_t;
 
 #if 0
 typedef enum vga_text_mode;
@@ -37,3 +40,32 @@ typedef struct
 	int8_t Attribute;
 } vga_buffer_cell;
 
+typedef struct
+{
+	vga_buffer_cell* Buffer;
+	size_t CurrentCursorPos;
+	int8_t CurrentAttribute;
+} vga_console;
+
+static void
+vga_console_clear(vga_console* Console)
+{
+#if 0
+	Console->CurrentCursorPos = 0;
+	memset(Console->Buffer, 0, VGA_BUFFER_MAX_WIDTH * VGA_BUFFER_MAX_HEIGHT);
+#endif
+}
+
+static void
+vga_console_write(vga_console* Console, char* String)
+{
+	vga_buffer_cell* CurrentCell = &Console->Buffer[Console->CurrentCursorPos];
+	while(*String)
+	{
+		CurrentCell->Character = *String;
+		CurrentCell->Attribute = Console->CurrentAttribute;
+		Console->CurrentCursorPos += 1;
+		CurrentCell += 1;
+		String += 1;
+	}
+}

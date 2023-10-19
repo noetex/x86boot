@@ -1,19 +1,3 @@
-static void*
-memset(void* Dest, int Pattern, size_t NumBytes)
-{
-	char* DestByte = Dest;
-	char ByteValue = (char)Pattern;
-	while(NumBytes > 0)
-	{
-		*DestByte = ByteValue;
-		DestByte += 1;
-		NumBytes -= 1;
-	}
-	void* Result = (void*)DestByte;
-	return Result;
-}
-
-
 static void
 vga_clear_screen(void)
 {
