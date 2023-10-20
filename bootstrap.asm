@@ -1,3 +1,9 @@
+KERNEL_CODE equ $$ + 512
+VIDEO_MEMORY equ 0xb8000
+WHITE_ON_BLACK equ 0xf
+CODE_SEG_OFFSET equ (GDT32_CODE - GDT32_BASE)
+DATA_SEG_OFFSET equ (GDT32_DATA - GDT32_BASE)
+
 [ORG 0x7c00]
 [BITS 16]
 		jmp 0x0: label_start16  ; clear cs register prior to any execution
@@ -93,10 +99,3 @@ MESSAGE_DISK_ERROR: db "ERROR: Could not read from disk", 14, 10, 0
 
 times (510 - ($ - $$)) db 0
 dw 0xaa55  ; MBR signature
-
-; constants
-KERNEL_CODE equ $$ + 512
-VIDEO_MEMORY equ 0xb8000
-WHITE_ON_BLACK equ 0xf
-CODE_SEG_OFFSET equ (GDT32_CODE - GDT32_BASE)
-DATA_SEG_OFFSET equ (GDT32_DATA - GDT32_BASE)
