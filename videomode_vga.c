@@ -1,7 +1,7 @@
 static void
 vga_clear_screen(void)
 {
-	memset((void*)VGA_BUFFER_ADDRESS, 0, sizeof(vga_buffer_cell) * 80 * 25);
+	memset(VGA_BUFFER_ADDRESS, 0, sizeof(vga_buffer_cell) * 80 * 25);
 }
 
 static void
