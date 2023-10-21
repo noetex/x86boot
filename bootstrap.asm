@@ -51,11 +51,11 @@ label_setup32:
 		mov ds, ax
 		mov es, ax
 		mov ss, ax
+		mov esp, 0x90000
+		mov ebp, esp
 
 label_start32:
 		; TODO: multiboot loader check
-		mov esp, 0x90000
-		mov ebp, esp
 
 		; does our hardware support the CPUID instruction?
 		pushfd
