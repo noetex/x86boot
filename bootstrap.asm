@@ -1,10 +1,11 @@
+[ORG 0x7c00]
+
 KERNEL_CODE equ $$ + 512
 VIDEO_MEMORY equ 0xb8000
 WHITE_ON_BLACK equ 0xf
 CODE_SEG_OFFSET equ (GDT32_CODE - GDT32_BASE)
 DATA_SEG_OFFSET equ (GDT32_DATA - GDT32_BASE)
 
-[ORG 0x7c00]
 [BITS 16]
 		smsw cx                 ; read bottom 16-bits of CR0
 		test cx, 0x1            ; did some bootloader enable 32-bit for us?
