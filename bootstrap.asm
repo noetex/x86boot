@@ -6,7 +6,10 @@ DATA_SEG_OFFSET equ (GDT32_DATA - GDT32_BASE)
 
 [ORG 0x7c00]
 [BITS 16]
-		jmp 0x0: label_start16  ; clear cs register prior to any execution
+		smsw cx                 ; read bottom 16-bits of CR0
+		test cx, 0x1            ; did some bootloader enable 32-bit for us?
+		jnz label_start32       ; note: keep the CS regsiter intact
+		jmp 0x0: label_start16  ; clear CS register for our purposes
 
 label_start16:
 		xor ax, ax
@@ -39,15 +42,16 @@ label_enter_protected_mode:
 		mov eax, cr0
 		or eax, 1
 		mov cr0, eax
-		jmp CODE_SEG_OFFSET: label_start32  ; flush instruction pipeline
+		jmp CODE_SEG_OFFSET: label_setup32  ; flush instruction pipeline
 
 [bits 32]
-label_start32:
+label_setup32:
 		mov ax, DATA_SEG_OFFSET
 		mov ds, ax
 		mov es, ax
 		mov ss, ax
 
+label_start32:
 		mov esp, 0x90000
 		mov ebp, esp
 
