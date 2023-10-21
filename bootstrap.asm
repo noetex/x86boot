@@ -101,7 +101,7 @@ GDT32_DESC:
 	dd GDT32_BASE
 
 MESSAGE_UNSUPPORTED_CPUID: db "ERROR: This machine does not support the CPUID instruction", 0
-MESSAGE_DISK_ERROR: db "ERROR: Could not read from disk", 14, 10, 0
+MESSAGE_DISK_ERROR: db "ERROR: Could not read from disk", 0
 
 times (510 - ($ - $$)) db 0
 dw 0xaa55  ; MBR signature
