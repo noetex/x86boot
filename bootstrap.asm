@@ -17,7 +17,7 @@ label_start16:
 
 		; read more sectors from disk
 		mov ah, 0x2         ; read sector routine
-		mov al, 0x1         ; num sectors to read
+		mov al, 0x10        ; num sectors to read
 		mov bx, KERNEL_CODE ; destination
 		mov ch, 0x0         ; source cylinder
 		mov dh, 0x0         ; source head
@@ -52,6 +52,7 @@ label_setup32:
 		mov ss, ax
 
 label_start32:
+		; TODO: multiboot loader check
 		mov esp, 0x90000
 		mov ebp, esp
 
