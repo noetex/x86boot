@@ -52,7 +52,15 @@ vga_console_clear(vga_console* Console)
 {
 #if 0
 	Console->CurrentCursorPos = 0;
-	memset(Console->Buffer, 0, VGA_BUFFER_MAX_WIDTH * VGA_BUFFER_MAX_HEIGHT);
+	vga_buffer_cell* CurrentCell = &Console->Buffer[Console->CurrentCursorPos];
+	while(*String)
+	{
+		CurrentCell->Character = ' ';
+		CurrentCell->Attribute = WHITE_ON_BLACK;
+		CurrentCell += 1;
+	}
+	CurrentCell->Character = (char)219;
+	CurrentCell->Attribute = Console->CurrentAttribute;
 #endif
 }
 
@@ -68,4 +76,6 @@ vga_console_write(vga_console* Console, char* String)
 		CurrentCell += 1;
 		String += 1;
 	}
+	CurrentCell->Character = (char)219;
+	CurrentCell->Attribute = WHITE_ON_BLACK;
 }

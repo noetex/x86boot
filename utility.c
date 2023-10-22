@@ -1,5 +1,4 @@
-static void*
-memset(void* Dest, int Pattern, size_t NumBytes)
+void* memset(void* Dest, int Pattern, size_t NumBytes)
 {
 	char* DestByte = Dest;
 	char ByteValue = (char)Pattern;
